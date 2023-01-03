@@ -49,7 +49,7 @@ plotting_data = {
         },
     "Chenab":{
         "location": "Marala", 
-        "coords":[32.77,  73.87], 
+        "coords":[32.6724, 74.4644], 
         "shapefile": 'chenab/newchenab.shp', 
         "fillColor": 'red', 
         "border_color" : 'firebrick'
