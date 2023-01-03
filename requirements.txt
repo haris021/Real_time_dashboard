@@ -1,6 +1,7 @@
 pip==21.1.2 
 plotly
 bs4
+geojson
 pyshp
 matplotlib
 openpyxl
