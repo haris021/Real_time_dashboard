@@ -141,7 +141,7 @@ def retrieve_data():
 
     master_df["Month"] = master_df["Month"].apply(lambda month: month_to_number[month])
     master_df["Date"] = pd.to_datetime(master_df[["Year", "Month", "Day"]])
-    master_df = master_df[['Date', 'Indus at Tarbela (m3/s)','Kabul at Nowshera (m3/s)','Jhelum at Mangla (m3/s)','Chenab at Marala (m3/s)']]
+    master_df = master_df[['Date', 'Indus at Tarbela (1000 x CUSECS)','Kabul at Nowshera (1000 x CUSECS)','Jhelum at Mangla (1000 x CUSECS)','Chenab at Marala (1000 x CUSECS)']]
 
     for data_col in list(master_df.columns)[1:]:
         master_df[data_col] = master_df[data_col].apply(lambda data: data.strip())
@@ -152,7 +152,7 @@ def regenerate_plots(master_df):
     
     for river in plotting_data.keys(): 
 
-        col_name = "{} at {} (m3/s)".format(river, plotting_data[river]["location"])
+        col_name = "{} at {} (1000 x CUSECS)".format(river, plotting_data[river]["location"])
         shpfile = plotting_data[river]["shapefile"]
 
         df = master_df[["Date", col_name]]
@@ -192,7 +192,7 @@ def generate_map(master_df):
         )
 
 
-        col_name = "{} at {} (m3/s)".format(river, plotting_data[river]["location"])
+        col_name = "{} at {} (1000 x CUSECS)".format(river, plotting_data[river]["location"])
         df = master_df[["Date", col_name]]
         df[col_name] = pd.to_numeric(df[col_name], downcast="float")
         chart = alt.Chart(df).mark_line().encode(x='Date', y=col_name).properties(width=540,height=250)
