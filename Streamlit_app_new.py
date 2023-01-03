@@ -237,7 +237,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 master_df, timeperiod = retrieve_data()
 generate_map(master_df)
 
-st.header("River Inflows Data") 
+st.header("Real Time River Inflows Dashboard") 
 st.subheader("{} - {}".format(timeperiod[0], timeperiod[1])) 
 
 html = open("Final_map.html", 'r', encoding ='utf-8').read()
