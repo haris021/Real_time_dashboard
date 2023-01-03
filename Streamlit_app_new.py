@@ -101,8 +101,8 @@ def get_river_flow_data():
 	
 	table_data = table[0].find_all('tr')
 	table_data = table_data[4:]
-	Headings = ['Date', 'Indus_levels','Indus at Tarbela (m3/s)','Indus_Outflow','Kabul at Nowshera (m3/s)',
-	'Jhelum_levels','Jhelum at Mangla (m3/s)','Jhelum_Outflow', 'Chenab at Marala (m3/s)','System_Inflow_now',
+	Headings = ['Date', 'Indus_levels','Indus at Tarbela (1000 x CUSECS)','Indus_Outflow','Kabul at Nowshera (1000 x CUSECS)',
+	'Jhelum_levels','Jhelum at Mangla (1000 x CUSECS)','Jhelum_Outflow', 'Chenab at Marala (1000 x CUSECS)','System_Inflow_now',
 	'System_Inflow_past','System_Inflow_avg']
 	df = table_to_df(table_data,headings = Headings)
 	df.drop(['Indus_levels', 'Indus_Outflow', 'Jhelum_levels', 'Jhelum_Outflow', 'System_Inflow_now', 'System_Inflow_past', 'System_Inflow_avg'], axis = 1, inplace = True)
