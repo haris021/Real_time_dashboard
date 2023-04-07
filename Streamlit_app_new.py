@@ -96,16 +96,16 @@ def table_to_df(table_data, headings):
 	return df
 
 def get_river_flow_data():
-	url="http://www.wapda.gov.pk/index.php/river-flow-data"
+	url="https://www.wapda.gov.pk/river-flow"
 	table = get_html_table(url)
 	
 	table_data = table[0].find_all('tr')
 	table_data = table_data[4:]
-	Headings = ['Date', 'Indus_levels','Indus at Tarbela (1000 x CUSECS)','Indus_Outflow','Kabul at Nowshera (1000 x CUSECS)',
-	'Jhelum_levels','Jhelum at Mangla (1000 x CUSECS)','Jhelum_Outflow', 'Chenab at Marala (1000 x CUSECS)','System_Inflow_now',
-	'System_Inflow_past','System_Inflow_avg']
+	Headings = ['Date', 'Levels(Ft)','Inflow','Outflow','Kabul Inflow At Nowshera',
+	'Levels(Ft)','Inflow','Outflow', 'Chenab Inflow At Marala','Current Year',
+	'Last Year','Average Last 10 Year']
 	df = table_to_df(table_data,headings = Headings)
-	df.drop(['Indus_levels', 'Indus_Outflow', 'Jhelum_levels', 'Jhelum_Outflow', 'System_Inflow_now', 'System_Inflow_past', 'System_Inflow_avg'], axis = 1, inplace = True)
+	df.drop(['Levels(Ft)', 'Outflow', 'Levels(Ft)', 'Outflow', 'Current Year', 'Last Year', 'Average Last 10 Year'], axis = 1, inplace = True)
 	return df, table[0]
 
 # Retrieving, organizing, and cleaning the data fetched
