@@ -1,5 +1,23 @@
 from bs4 import BeautifulSoup
 import requests
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import pandas as pd
+from time import sleep
+from selenium.webdriver.common.by import By
+import os
+import selenium
+from selenium import webdriver
+import time
+from PIL import Image
+import io
+import requests
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.webdriver.common.by import By
+from datetime import datetime
 import pandas as pd
 import openpyxl
 from openpyxl import Workbook
@@ -95,19 +113,44 @@ def table_to_df(table_data, headings):
 	
 	return df
 
-def get_river_flow_data():
-	url="https://www.wapda.gov.pk/river-flow"
-	table = get_html_table(url)
+#def get_river_flow_data():
+#	url="https://www.wapda.gov.pk/river-flow"
+#	table = get_html_table(url)
 	
-	table_data = table[0].find_all('tr')
-	table_data = table_data[4:]
-	Headings = ['Date', 'Levels(Ft)','Inflow','Outflow','Kabul Inflow At Nowshera',
-	'Levels(Ft)','Inflow','Outflow', 'Chenab Inflow At Marala','Current Year',
-	'Last Year','Average Last 10 Year']
-	df = table_to_df(table_data,headings = Headings)
-	df.drop(['Levels(Ft)', 'Outflow', 'Levels(Ft)', 'Outflow', 'Current Year', 'Last Year', 'Average Last 10 Year'], axis = 1, inplace = True)
-	return df, table[0]
-
+#	table_data = table[0].find_all('tr')
+#	table_data = table_data[4:]
+#	Headings = ['Date', 'Levels(Ft)','Inflow','Outflow','Kabul Inflow At Nowshera',
+#	'Levels(Ft)','Inflow','Outflow', 'Chenab Inflow At Marala','Current Year',
+#	'Last Year','Average Last 10 Year']
+#	df = table_to_df(table_data,headings = Headings)
+#	df.drop(['Levels(Ft)', 'Outflow', 'Levels(Ft)', 'Outflow', 'Current Year', 'Last Year', 'Average Last 10 Year'], axis = 1, inplace = True)
+#	return df, table[0]
+def get_river_flow_data():
+    url = "https://www.wapda.gov.pk/river-flow"
+    driver = webdriver.Chrome(ChromeDriverManager().install())
+    driver.get(url)
+        #Scroll to the end of the page
+    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    time.sleep(5)#sleep_between_interactions
+    table = driver.find_element(By.TAG_NAME, "table")
+    # Extract the table data by looping through the rows and cells
+    table_data = []
+    rows = table.find_elements(By.TAG_NAME, "tr")
+    for row in rows:
+        row_data = []
+        cells = row.find_elements(By.TAG_NAME, "td")
+        for cell in cells:
+            row_data.append(cell.text)
+        table_data.append(row_data)
+    table_data=table_data[1:]
+    Headings = ['Date', 'Levels(Ft)','Inflow','Outflow','Kabul Inflow At Nowshera',
+    'Levels(Ft)','Inflow','Outflow', 'Chenab Inflow At Marala','Current Year',
+    'Last Year','Average Last 10 Year']
+    df = pd.DataFrame(table_data, columns=Headings)
+    df.drop(['Levels(Ft)', 'Outflow', 'Levels(Ft)', 'Outflow', 'Current Year', 'Last Year', 'Average Last 10 Year'], axis = 1, inplace = True)
+    current_year = datetime.now().year
+    df['Date'] = pd.to_datetime(df['Date'] + ' ' + str(current_year), format='%d %b %Y', yearfirst=False)
+    return df
 # Retrieving, organizing, and cleaning the data fetched
 def retrieve_data():
 
