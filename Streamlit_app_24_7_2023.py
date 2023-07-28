@@ -13,8 +13,10 @@ def reconstruct_map():
 
     # Scrapping the data
 
-    driver = webdriver.Chrome(ChromeDriverManager().install())
+    chrome_driver= 'chromedriver'
+    driver = webdriver.Chrome()
     driver.get("https://wapda.gov.pk/river-flow")
+    
     driver.implicitly_wait(15)
 
 
